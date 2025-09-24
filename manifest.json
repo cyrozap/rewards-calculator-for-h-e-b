@@ -12,7 +12,7 @@
         "https://www.heb.com/checkout"
       ],
       "js": [
-        "content.js"
+        "checkout.js"
       ]
     }
   ]
