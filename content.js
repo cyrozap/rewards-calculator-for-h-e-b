@@ -28,7 +28,7 @@
   ];
 
   function isHEBBrand(productName) {
-    return HEB_BRANDS.some(brand => productName.includes(brand));
+    return HEB_BRANDS.some(brand => productName.startsWith(brand));
   }
 
   function parsePrice(priceText) {
