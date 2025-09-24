@@ -24,7 +24,8 @@
     "H-E-B",
     "Hill Country Fare",
     "Central Market",
-    "Cocinaware"
+    "Cocinaware",
+    "Fresh"
   ];
 
   function isHEBBrand(productName) {
