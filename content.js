@@ -28,8 +28,16 @@
     "Fresh"
   ];
 
+  function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
   function isHEBBrand(productName) {
-    return HEB_BRANDS.some(brand => productName.startsWith(brand));
+    return HEB_BRANDS.some(brand => {
+      const escapedBrand = escapeRegExp(brand);
+      const regex = new RegExp(`^${escapedBrand}(\\s|$)`);
+      return regex.test(productName);
+    });
   }
 
   function parsePrice(priceText) {
