@@ -153,23 +153,6 @@
         const { rewardsValue, effectivePercentage } = calculateRewards(totalPrice, hebPrice, nonHEBPrice);
 
         const resultElements = displayResults(hebPrice, nonHEBPrice, rewardsValue, effectivePercentage);
-
-        const totalElement = document.querySelector('span[data-qe-id="Estimated total total"]');
-        if (totalElement) {
-          const totalObserver = new MutationObserver(() => {
-            const newTotal = getFinalPrice();
-            const newHebPrice = hebItems.reduce((sum, val) => sum + val, 0);
-            const newNonHEBPrice = newTotal - newHebPrice;
-            const { rewardsValue: newRewards, effectivePercentage: newEffective } = calculateRewards(newTotal, newHebPrice, newNonHEBPrice);
-
-            if (resultElements.effectiveItem) resultElements.effectiveItem.querySelector("span span:last-child").textContent = `${newEffective.toFixed(2)}%`;
-            if (resultElements.rewardsItem) resultElements.rewardsItem.querySelector("span span:last-child").textContent = `$${newRewards.toFixed(2)}`;
-            if (resultElements.nonHEBItem) resultElements.nonHEBItem.querySelector("span span:last-child").textContent = `$${newNonHEBPrice.toFixed(2)}`;
-            if (resultElements.hebItem) resultElements.hebItem.querySelector("span span:last-child").textContent = `$${newHebPrice.toFixed(2)}`;
-          });
-
-          totalObserver.observe(totalElement, { characterData: true, subtree: true });
-        }
       }
     });
 
