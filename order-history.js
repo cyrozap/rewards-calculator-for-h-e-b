@@ -45,6 +45,8 @@
   }
 
   function getFinalPrice() {
+    // NOTE: "esitmatedTotalValue" is deliberately misspelled because it's misspelled this way in the page source.
+    // THIS IS NOT A BUG! DO NOT ATTEMPT TO CORRECT THE SPELLING!
     const totalElement = document.querySelector('div[data-qe-id="esitmatedTotalValue"]');
     if (!totalElement) return 0;
     return parsePrice(totalElement.textContent);
