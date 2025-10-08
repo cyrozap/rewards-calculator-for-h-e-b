@@ -23,6 +23,7 @@
   const HEB_BRANDS = [
     "H-E-B",
     "Hill Country Fare",
+    "Higher Harvest",
     "Central Market",
     "Cocinaware",
     "Fresh"
