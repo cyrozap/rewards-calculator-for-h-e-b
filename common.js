@@ -44,8 +44,16 @@ function parsePrice(priceText) {
   return parseFloat(priceText.replace(/[^0-9.-]+/g, ""));
 }
 
-function calculateRewards(totalPrice, hebPrice, nonHEBPrice) {
-  const rewardsValue = Math.round(((hebPrice * 0.05) + (nonHEBPrice * 0.015)) * 100) / 100;
+function calculateRewards(totalPrice, hebItems, nonHEBItems) {
+  const hebRewards = hebItems.reduce((sum, price) => {
+    return sum + Math.floor(price * 5);
+  }, 0) / 100;
+
+  const nonHEBRewards = nonHEBItems.reduce((sum, price) => {
+    return sum + Math.floor(price * 1.5);
+  }, 0) / 100;
+
+  const rewardsValue = hebRewards + nonHEBRewards;
   const effectivePercentage = (rewardsValue / totalPrice) * 100;
   return {
     rewardsValue,

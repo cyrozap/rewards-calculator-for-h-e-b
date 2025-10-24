@@ -113,11 +113,27 @@
           }
         });
 
-        const totalPrice = getFinalPrice();
-        const hebPrice = hebItems.reduce((sum, val) => sum + val, 0);
-        const nonHEBPrice = totalPrice - hebPrice;
+        // Extract delivery fee, tax, and driver tip
+        const deliveryFeeElement = document.querySelector('span[data-qe-id="DeliveryfeetotalFee"]');
+        const taxElement = document.querySelector('span[data-qe-id="Estimated tax total"]');
+        const driverTipElement = document.querySelector('span[data-qe-id="Driver tip total"]');
 
-        const { rewardsValue, effectivePercentage } = calculateRewards(totalPrice, hebPrice, nonHEBPrice);
+        if (deliveryFeeElement) {
+          nonHEBItems.push(parsePrice(deliveryFeeElement.textContent));
+        }
+        if (taxElement) {
+          nonHEBItems.push(parsePrice(taxElement.textContent));
+        }
+        if (driverTipElement) {
+          nonHEBItems.push(parsePrice(driverTipElement.textContent));
+        }
+
+        const totalPrice = getFinalPrice();
+
+        const { rewardsValue, effectivePercentage } = calculateRewards(totalPrice, hebItems, nonHEBItems);
+
+        const hebPrice = hebItems.reduce((sum, val) => sum + val, 0);
+        const nonHEBPrice = nonHEBItems.reduce((sum, val) => sum + val, 0);
 
         const resultElements = displayResults(hebPrice, nonHEBPrice, rewardsValue, effectivePercentage);
 
@@ -125,9 +141,22 @@
         if (totalElement) {
           const totalObserver = new MutationObserver(() => {
             const newTotal = getFinalPrice();
+
+            // Re-extract driver tip
+            const driverTipElement = document.querySelector('span[data-qe-id="Driver tip total"]');
+
+            // Remove the last element (tip)
+            nonHEBItems.splice(-1);
+
+            // Add the new tip value
+            if (driverTipElement) {
+              nonHEBItems.push(parsePrice(driverTipElement.textContent));
+            }
+
+            const { rewardsValue: newRewards, effectivePercentage: newEffective } = calculateRewards(newTotal, hebItems, nonHEBItems);
+
             const newHebPrice = hebItems.reduce((sum, val) => sum + val, 0);
-            const newNonHEBPrice = newTotal - newHebPrice;
-            const { rewardsValue: newRewards, effectivePercentage: newEffective } = calculateRewards(newTotal, newHebPrice, newNonHEBPrice);
+            const newNonHEBPrice = nonHEBItems.reduce((sum, val) => sum + val, 0);
 
             if (resultElements.effectiveItem) resultElements.effectiveItem.querySelector("span span:last-child").textContent = `${newEffective.toFixed(2)}%`;
             if (resultElements.rewardsItem) resultElements.rewardsItem.querySelector("span span:last-child").textContent = `$${newRewards.toFixed(2)}`;

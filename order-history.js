@@ -115,11 +115,27 @@
           }
         });
 
-        const totalPrice = getFinalPrice();
-        const hebPrice = hebItems.reduce((sum, val) => sum + val, 0);
-        const nonHEBPrice = totalPrice - hebPrice;
+        // Extract delivery fee, tax, and driver tip
+        const deliveryFeeElement = document.querySelector('span[data-qe-id="DeliveryfeetotalFee"]');
+        const taxElement = document.querySelector('span[data-qe-id="Tax total"]');
+        const driverTipElement = document.querySelector('span[data-qe-id="Driver tip total"]');
 
-        const { rewardsValue, effectivePercentage } = calculateRewards(totalPrice, hebPrice, nonHEBPrice);
+        if (deliveryFeeElement) {
+          nonHEBItems.push(parsePrice(deliveryFeeElement.textContent));
+        }
+        if (taxElement) {
+          nonHEBItems.push(parsePrice(taxElement.textContent));
+        }
+        if (driverTipElement) {
+          nonHEBItems.push(parsePrice(driverTipElement.textContent));
+        }
+
+        const totalPrice = getFinalPrice();
+
+        const { rewardsValue, effectivePercentage } = calculateRewards(totalPrice, hebItems, nonHEBItems);
+
+        const hebPrice = hebItems.reduce((sum, val) => sum + val, 0);
+        const nonHEBPrice = nonHEBItems.reduce((sum, val) => sum + val, 0);
 
         const resultElements = displayResults(hebPrice, nonHEBPrice, rewardsValue, effectivePercentage);
       }
