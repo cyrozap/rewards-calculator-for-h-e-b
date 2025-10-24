@@ -12,6 +12,7 @@
         "https://www.heb.com/checkout"
       ],
       "js": [
+        "common.js",
         "checkout.js"
       ]
     },
@@ -20,6 +21,7 @@
         "https://www.heb.com/my-account/order-history/*"
       ],
       "js": [
+        "common.js",
         "order-history.js"
       ]
     }

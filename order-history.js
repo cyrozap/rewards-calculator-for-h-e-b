@@ -20,46 +20,12 @@
 (function () {
   "use strict";
 
-  const HEB_BRANDS = [
-    "H-E-B",
-    "Hill Country Fare",
-    "Higher Harvest",
-    "Central Market",
-    "Cocinaware",
-    "Fresh"
-  ];
-
-  function escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
-
-  function isHEBBrand(productName) {
-    return HEB_BRANDS.some(brand => {
-      const escapedBrand = escapeRegExp(brand);
-      const regex = new RegExp(`^${escapedBrand}(\\s|$)`);
-      return regex.test(productName);
-    });
-  }
-
-  function parsePrice(priceText) {
-    return parseFloat(priceText.replace(/[^0-9.-]+/g, ""));
-  }
-
   function getFinalPrice() {
     // NOTE: "esitmatedTotalValue" is deliberately misspelled because it's misspelled this way in the page source.
     // THIS IS NOT A BUG! DO NOT ATTEMPT TO CORRECT THE SPELLING!
     const totalElement = document.querySelector('div[data-qe-id="esitmatedTotalValue"]');
     if (!totalElement) return 0;
     return parsePrice(totalElement.textContent);
-  }
-
-  function calculateRewards(totalPrice, hebPrice, nonHEBPrice) {
-    const rewardsValue = Math.round(((hebPrice * 0.05) + (nonHEBPrice * 0.015)) * 100) / 100;
-    const effectivePercentage = (rewardsValue / totalPrice) * 100;
-    return {
-      rewardsValue,
-      effectivePercentage
-    };
   }
 
   function displayResults(hebPrice, nonHEBPrice, rewardsValue, effectivePercentage) {
